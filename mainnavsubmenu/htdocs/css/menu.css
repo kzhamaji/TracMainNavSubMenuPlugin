@@ -1,0 +1,59 @@
+/* vim: set sw=4:sts=4:ft=css: */
+#mainnav > ul > li > ul a {
+    display: block;
+    text-align: center;
+}
+#mainnav > ul > li ul
+{
+    position: absolute;
+    visibility: hidden;
+    opacity: 0;
+    z-index: 99;
+    padding-top: 0.75em;
+
+    -webkit-transition: opacity 0.3s ease;
+    -moz-transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease;
+}
+#mainnav > ul > li:hover ul {
+    visibility: visible;
+    opacity: 1;
+}
+#mainnav > ul > li ul li {
+    display: block;
+    margin: 1px;
+    border: none;
+    padding: 0;
+}
+#mainnav > ul > li ul li:hover {
+    border: none;
+}
+#mainnav > ul > li ul :link,
+#mainnav > ul > li ul :visited {
+    box-shadow: 0px 0.1em 0.6em 0px #666;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+#mainnav > ul > li ul li:first-child :link,
+#mainnav > ul > li ul li:first-child :visited {
+    border-top-left-radius: 0.5em;
+    border-top-right-radius: 0.5em;
+}
+#mainnav > ul > li ul li:last-child :link,
+#mainnav > ul > li ul li:last-child :visited {
+    border-bottom-left-radius: 0.5em;
+    border-bottom-right-radius: 0.5em;
+}
+#mainnav > ul > .active > ul :link,
+#mainnav > ul > .active > ul :visited {
+    box-shadow: 0px 0.1em 0.3em 0px #999;
+    color: #000;
+    background: none;
+}
+#mainnav > ul > .active > ul li:hover :link,
+#mainnav > ul > .active > ul li:hover :visited {
+    background: #000 url("../../common/topbar_gradient2.png") repeat-x scroll 0px 0px;
+    color: #EEE;
+    box-shadow: 0px 0.1em 0.6em 0px #666;
+    text-shadow: none;
+}
