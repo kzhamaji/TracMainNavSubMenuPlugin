@@ -15,7 +15,7 @@ from trac.ticket.model import Type, Milestone
 from trac.util.translation import _
 
 
-class TracHierchicalMainNav (Component):
+class TracMainNavSubMenuPlugin (Component):
 
     implements(IRequestFilter, ITemplateProvider)
 
@@ -107,7 +107,7 @@ class TracHierchicalMainNav (Component):
 
 from trac.web.chrome import INavigationContributor
 
-class TracMainNavAddLinkPlugin (Component):
+class TracMainNavAddLinkPlaceholderPlugin (Component):
 
     implements(INavigationContributor)
 
