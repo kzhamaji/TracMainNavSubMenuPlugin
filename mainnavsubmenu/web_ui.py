@@ -44,6 +44,8 @@ class TracHierchicalMainNav (Component):
                     self._add_ticket_types(req, ul)
                 elif href == '@saved_query@':
                     self._add_saved_query(req, ul, _item.get('label'))
+                elif href == '@saved_query@':
+                    self._add_saved_query(req, ul, _item.get('label'))
                 else:
                     label = _item.get('label') or _item.get('name')
                     self._add_item(req, ul, label, href)
@@ -100,3 +102,17 @@ class TracHierchicalMainNav (Component):
                 v = v.values()
             submenus[key] = v
         return submenus
+
+
+
+from trac.web.chrome import INavigationContributor
+
+class TracMainNavAddLinkPlugin (Component):
+
+    implements(INavigationContributor)
+
+    def get_active_navigation_item (self, req):
+        return ''
+
+    def get_navigation_items (self, req):
+        yield ('mainnav', 'links', tag.a(_('Links'), href='/'))
