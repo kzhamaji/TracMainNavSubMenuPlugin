@@ -44,8 +44,6 @@ class TracMainNavSubMenuPlugin (Component):
                     self._add_ticket_types(req, ul)
                 elif href == '@saved_query@':
                     self._add_saved_query(req, ul, _item.get('label'))
-                elif href == '@saved_query@':
-                    self._add_saved_query(req, ul, _item.get('label'))
                 else:
                     label = _item.get('label') or _item.get('name')
                     self._add_item(req, ul, label, href)
@@ -72,12 +70,12 @@ class TracMainNavSubMenuPlugin (Component):
         for t in Type.select(self.env):
             label = t.name
             href = '/newticket?type=' + label
-            self._add_item(req, ul, label, href, False)
+            self._add_item(req, ul, label, href)
 
     def _add_saved_query (self, req, ul, label):
         query_href = req.session.get('query_href')
         if query_href:
-            self._add_item(req, ul, label or 'Last Query', query_href)
+            self._add_item(req, ul, label or 'Last Query', query_href, False)
 
     @cached
     def _submenus (self):
