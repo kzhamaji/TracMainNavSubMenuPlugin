@@ -12,7 +12,6 @@ from trac.web.chrome import ITemplateProvider, add_stylesheet
 from trac.cache import cached
 
 from trac.ticket.model import Type, Milestone
-from trac.util.translation import _
 
 
 class TracMainNavSubMenuPlugin (Component):
@@ -43,9 +42,9 @@ class TracMainNavSubMenuPlugin (Component):
                 elif href == '@ticket_types@':
                     self._add_ticket_types(req, ul)
                 elif href == '@saved_query@':
-                    self._add_saved_query(req, ul, _item.get('label'))
+                    self._add_saved_query(req, ul, self._item_label(req, _item))
                 else:
-                    label = _item.get('label') or _item.get('name')
+                    label = self._item_label(req, _item)
                     self._add_item(req, ul, label, href)
 
             item['label'] = tag(item['label'], ul)
@@ -55,10 +54,13 @@ class TracMainNavSubMenuPlugin (Component):
     def pre_process_request (self, req, handler):
         return handler
 
+    def _item_label (self, req, item):
+        return item.get('label.'+str(req.locale)) or item.get('label') or item.get('name')
+
     def _add_item (self, req, ul, label, href, expand_href=True):
         if href and expand_href and href.startswith('/'):
             href = req.href + href
-        ul(tag.li(tag.a(_(label), href=href)))
+        ul(tag.li(tag.a(label, href=href)))
 
     def _add_milestones (self, req, ul):
         for milestone in Milestone.select(self.env, False):
@@ -84,8 +86,8 @@ class TracMainNavSubMenuPlugin (Component):
         for k, options in groupby(section, lambda k: k.split('.')[0]):
             smenus = submenus.setdefault(k, {})
             for opt in options:
-                elts = opt.split('.')
-                if len(elts) < 3:
+                elts = opt.split('.', 2)
+                if len(elts) < 3 or elts[1] == 'label':
                     continue
                 name = elts[1]
                 menu = smenus.setdefault(name, {'name': name})
@@ -118,4 +120,8 @@ class TracMainNavAddPlaceholderPlugin (Component):
     def get_navigation_items (self, req):
         if self.placeholders:
             for item in self.placeholders:
-                yield ('mainnav', item, tag.a(item, href='/'))
+                yield ('mainnav', item,
+                        tag.a(self._get_label(req, item), href='/'))
+
+    def _get_label (self, req, item):
+        return self.env.config.get('mainnav', item+'.label.'+str(req.locale), item)
