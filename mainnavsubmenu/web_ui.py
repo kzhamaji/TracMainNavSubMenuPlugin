@@ -104,13 +104,18 @@ class TracMainNavSubMenuPlugin (Component):
 
 
 from trac.web.chrome import INavigationContributor
+from trac.config import ListOption
 
-class TracMainNavAddLinkPlaceholderPlugin (Component):
+class TracMainNavAddPlaceholderPlugin (Component):
 
     implements(INavigationContributor)
+
+    placeholders = ListOption('mainnav', 'placeholders')
 
     def get_active_navigation_item (self, req):
         return ''
 
     def get_navigation_items (self, req):
-        yield ('mainnav', 'links', tag.a(_('Links'), href='/'))
+        if self.placeholders:
+            for item in self.placeholders:
+                yield ('mainnav', item, tag.a(item, href='/'))
