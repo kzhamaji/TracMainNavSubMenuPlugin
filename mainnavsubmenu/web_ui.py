@@ -58,8 +58,8 @@ class TracMainNavSubMenuPlugin (Component):
         return item.get('label.'+str(req.locale)) or item.get('label') or item.get('name')
 
     def _add_item (self, req, ul, label, href, expand_href=True):
-        if href and expand_href and href.startswith('/'):
-            href = req.href + href
+        if href and expand_href:
+            href = req.abs_href + href
         ul(tag.li(tag.a(label, href=href)))
 
     def _add_milestones (self, req, ul):
